@@ -2,6 +2,14 @@
 
 This repository contains source code for a paper describing maximum geodesic manifold embedding and also an example implementation in GNU/Octave..
 
+* How to compile the paper
+
+Change to the paper/ subdirectory and type
+
+pdflatex mgme.tex
+
+This should produce a PDF file which you can read..
+
 * Author:
 
 Florian Paul Schmidt (mista.tapas@gmx.net)
