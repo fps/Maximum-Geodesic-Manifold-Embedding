@@ -7,6 +7,54 @@
 
 \maketitle
 
-\abstract{We describe a manifold embedding algorithm based on the notion of maximum length geodesics.}
+\abstract{We describe a manifold embedding algorithm based on the notion of maximum length geodesics. While this algorithm does not have a sound statistical basis, it is nonetheless geometrically very intuitive and might serve as a basis for future work with a better statistical foundation.}
+
+\section{Introduction}
+
+In recent years there have been a number of new approaches to finding parametrizations (or coordinate systems) for data that lie on a low dimensional manifold embedded into a higher dimensional space. Among the first of these was ISOMAP (TODO: citation) and a little later there was Kernel PCA (TODO: citation).
+
+ISOMAP worked by first building a distance matrix of geodesic distances and then in the second step using simple metric dimensional scaling on this matrix of geodesic distances. An expensive preprocessing step in this case was the calculation of all pairwise geodesic distances which is $O(n^3)$, where $n$ is the number of datapoints using the Floyd-Warshall-Algorithm (TODO: citation).
+
+Kernel PCA applies the kernel trick to traditional Principal Component Analysis (TODO: citation) to find principal components in a possibly high dimensional feature space. Manifold embedding algorithms like ISOMAP, Local Linear Embedding (LLE) (TODO: citation), Laplacian Eigenmaps (TODO: citation) and others can all be recast in terms of Kernel PCA with certain choices of kernels (TODO: citation) .
+
+We build on the idea of using geodesic distances for finding an embedding but we use a slightly different approach that naturally allows approximations under certain conditions. The basic idea is to use only the maximum length geodesic through the data to find a $1$-dimensional embedding. If the manifold is uniformely sampled and convex, then finding the maximum length geodesic can be found by a simple iterative scheme using Dijkstra's Algorithm. 
+
+If this assumption does not hold, then one can always revert to using the Floyd-Warshall-Algorithm for finding pairwise distances.
+
+Once the maximum length geodesic is found one can find a single embedding coordinate for each point using the distances from each datapoint to the endpoints of the geodesic and then using a basic theorem about the lengths in a triangle.
+
+To find further embedding coordinates we modify the distance calculation using a basic theorem about distances in euclidian spaces to find a new maximal length geodesic under this modified distance function. Since the embedding function itself is again a function of the distances of each data point to the endpoints of the geodesic we can again use the modified distance function to find the embedding along the new geodesic. To find further embedding coordinates this scheme is simply iterated and stopped once a suitable stopping criterion is met (e.g. remaining maximal geodesic length is below a threshold).
+
+\section{Maximum Geodesic Manifold Embedding}
+
+In this section we first describe some preliminaries (see section \ref{preliminaries}) and the general framework using the full geodesic distance matrix (see section \ref{framework}). Then we go on to describe how to make some assumptions to speed up the procedure (see section \ref{assumptions}).
+
+\subsection{Preliminaries}\label{preliminaries}
+
+We note that the ordinary metric $d_D$ for $D$-dimensional euclidian space is
+
+\[d_D^2 = {\delta x_1}^2 + {\delta x_2}^2 + {\delta x_3}^2 + ..., \]
+
+where $\delta x_i$ is a displacement in the $x_i$ coordinate, i.e. the $i$-th coordinate. We can rearrange the terms as 
+
+\[d_D^2 - {\delta x_1}^2 = {\delta x_2}^2 + {\delta x_3}^2 + ...\]
+
+It is obvious that the right hand side of the equation is also a metric which we call $d_{D-1}$:
+
+\[d_{D-1}^2 = {\delta x_2}^2 + {\delta x_3}^2 + .... = d_D^2 - {\delta x_1}^2\]
+
+$d_{D-1}$ is a metric for a $D-1$ euclidian space and the interesting thing to note is that we have $d_D$ we can calculate $d_{D-1}$ simply by 
+
+\[d_{D-1} = (d_{D}^2 - {\delta x_1}^2).\]
+
+This is interesting when we observe that given a geodesic distance matrix $D$ with $D^{i,j}$ being the geodesic distance between points $x^i$ and $x^j$, we can calculate the distances in the $D-1$ dimensional subspace if we know the distances of the points projected onto a $1$-dimensional subspace. in any given dimension as ${\delta x}_1^{i,j}$.
+
+\subsection{The General Framework}
+
+
+
+\section{Examples}
+
+\section{Conclusion and Remarks}
 
 \end{document}
